@@ -5,11 +5,11 @@ from flask import Flask, render_template, request, redirect, url_for, send_file
 from PIL import Image, ImageDraw, ImageFont
 
 
-app = Flask(__name__)
-app.config['SECRET_KEY'] = os.environ['SECRET_KEY']
+tuxApp = Flask(__name__)
+tuxApp.config['SECRET_KEY'] = os.environ['SECRET_KEY']
 
 
-@app.route('/')
+@tuxApp.route('/')
 def home():
     tuxText = request.args.get('text')
     tuxFont = ImageFont.truetype('Helvetica.ttf', size=50)
@@ -28,4 +28,4 @@ def home():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    tuxApp.run(debug=True)
