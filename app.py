@@ -11,7 +11,7 @@ tuxApp.config['SECRET_KEY'] = os.environ['SECRET_KEY']
 
 @tuxApp.route('/')
 def home():
-    tuxText = request.args.get('text')
+    tuxText = request.args.get('text', 'lgtm')
     tuxFont = ImageFont.truetype('Helvetica.ttf', size=50)
     tux = Image.open('tux.jpg').convert('RGBA')
     tuxWidth, tuxHeight = tux.size
