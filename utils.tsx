@@ -15,7 +15,17 @@ const drawTux = (ctx, image, text, imageSize) => {
 };
 
 enum Tuxes {
+  bigEyeTux = "big-eye-tux",
+  fluffTux = "fluff-tux",
+  sailorTux = "sailor-tux",
   tuxOnDesk = "tux-on-desk",
+  blanketTux = "blanket-tux",
+  foodTux = "food-tux",
+  tableTux = "table-tux",
+  wideTux = "wide-tux",
+  chairTux = "chair-tux",
+  hangerTux = "hanger-tux",
+  treeTux = "tree-tux",
 }
 
 const allTuxes = Object.values(Tuxes);
