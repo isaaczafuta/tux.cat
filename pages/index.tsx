@@ -1,19 +1,16 @@
 import { useEffect, useRef, useState } from "react";
 
 import {
-  createMuiTheme,
   TextField,
   IconButton,
   InputAdornment,
-  ThemeProvider,
-  CssBaseline,
   makeStyles,
   Container,
   Paper,
 } from "@material-ui/core";
-import Head from "next/head";
 
 import FileCopyIcon from "@material-ui/icons/FileCopy";
+import OpenInNewIcon from "@material-ui/icons/OpenInNew";
 
 import { Navigation } from "../layout/Navigation";
 import { allTuxes, drawTux, Tuxes } from "../utils";
@@ -51,6 +48,26 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const getTuxParams = () => {
+  if (!window) {
+    return {
+      initialTuxText: "lgtm",
+      initialTux: allTuxes[0],
+    };
+  } else {
+    const urlParams = new URLSearchParams(window.location.search);
+    const initialTuxText = urlParams.get("text") || "lgtm";
+    const initialTuxParam = urlParams.get("tux");
+    const initialTux = allTuxes.includes(initialTuxParam as Tuxes)
+      ? (initialTuxParam as Tuxes)
+      : allTuxes[0];
+    return {
+      initialTuxText,
+      initialTux,
+    };
+  }
+};
+
 const Home = () => {
   const classes = useStyles();
 
@@ -59,11 +76,13 @@ const Home = () => {
   const url = useRef<HTMLInputElement>(null);
 
   const [tux, setTux] = useState<Tuxes | undefined>(undefined);
-  const [tuxText, setTuxText] = useState("lgtm");
+  const [tuxText, setTuxText] = useState("");
   const [imageLoaded, setImageLoaded] = useState(false);
 
   useEffect(() => {
-    setTux(allTuxes[0]);
+    const { initialTuxText, initialTux } = getTuxParams();
+    setTuxText(initialTuxText);
+    setTux(initialTux);
   }, []);
 
   useEffect(() => {
@@ -138,17 +157,28 @@ const Home = () => {
                   inputRef={url}
                   InputProps={{
                     endAdornment: (
-                      <InputAdornment position="end">
-                        <IconButton
-                          aria-label="Copy URL"
-                          onClick={() => {
-                            url.current.select();
-                            document.execCommand("copy");
-                          }}
-                        >
-                          <FileCopyIcon />
-                        </IconButton>
-                      </InputAdornment>
+                      <>
+                        <InputAdornment position="end">
+                          <IconButton
+                            aria-label="Copy URL"
+                            onClick={() => {
+                              url.current.select();
+                              document.execCommand("copy");
+                            }}
+                          >
+                            <FileCopyIcon />
+                          </IconButton>
+                        </InputAdornment>
+                        <InputAdornment position="end">
+                          <IconButton
+                            href={tuxSrcUrl}
+                            target="_blank"
+                            aria-label="Open"
+                          >
+                            <OpenInNewIcon />
+                          </IconButton>
+                        </InputAdornment>
+                      </>
                     ),
                   }}
                 />
